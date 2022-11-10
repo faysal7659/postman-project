@@ -1,0 +1,233 @@
+{
+	"info": {
+		"_postman_id": "37ffaa80-e022-4ebb-86bf-99eb0886b4c2",
+		"name": "Student details",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23336865"
+	},
+	"item": [
+		{
+			"name": "Get Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsondata= pm.response.json()\r",
+							"var see= jsondata[0].id\r",
+							"console.log(see)\r",
+							"\r",
+							"var statusCode = responseCode.code;\r",
+							"console.log(statusCode)\r",
+							"switch(statusCode){\r",
+							"    case 200:\r",
+							"        pm.test(\"status code matched\",function(){\r",
+							"        pm.response.to.have.status(200);\r",
+							"        });\r",
+							"        break\r",
+							"    case 201:\r",
+							"        pm.test(\"status code matched\",function(){\r",
+							"        pm.response.to.have.status(201);\r",
+							"        });\r",
+							"        break\r",
+							"    default:\r",
+							"        console.log(\"No match\");\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/api/studentsDetails",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Student",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let username= pm.variables.replaceIn(\"{{$randomUserName}}\")\r",
+							"pm.environment.set(\"first_name\",username)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData=pm.response.json()\r",
+							"\r",
+							"pm.environment.set(\"id\",jsonData.id)\r",
+							"console.log(jsonData.first_name)\r",
+							"pm.test(\"Checking first name\",()=>{\r",
+							"    pm.expect(jsonData.first_name).to.eql(pm.environment.get(\"first_name\"))\r",
+							"})\r",
+							"var statusCode = responseCode.code;\r",
+							"console.log(statusCode)\r",
+							"switch(statusCode){\r",
+							"    case 200:\r",
+							"        pm.test(\"status code matched\",function(){\r",
+							"        pm.response.to.have.status(200);\r",
+							"        });\r",
+							"        break\r",
+							"    case 201:\r",
+							"        pm.test(\"status code matched\",function(){\r",
+							"        pm.response.to.have.status(201);\r",
+							"        });\r",
+							"        break\r",
+							"    default:\r",
+							"        console.log(\"No match\");\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"first_name\": \"{{first_name}}\",\r\n  \"middle_name\": \"sample string 3\",\r\n  \"last_name\": \"sample string 4\",\r\n  \"date_of_birth\": \"sample string 5\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/api/studentsDetails",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var statusCode = responseCode.code;\r",
+							"console.log(statusCode)\r",
+							"switch(statusCode){\r",
+							"    case 200:\r",
+							"        pm.test(\"status code matched\",function(){\r",
+							"        pm.response.to.have.status(200);\r",
+							"        });\r",
+							"        break\r",
+							"    case 201:\r",
+							"        pm.test(\"status code matched\",function(){\r",
+							"        pm.response.to.have.status(201);\r",
+							"        });\r",
+							"        break\r",
+							"    default:\r",
+							"        console.log(\"No match\");\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":{{id}},\r\n  \"first_name\": \"{{first_name}} \",\r\n  \"middle_name\": \"bin \",\r\n  \"last_name\": \"ahmed \",\r\n  \"date_of_birth\": \"10-17-2001 \"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/api/studentsDetails/{{id}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Specific Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData=pm.response.json()\r",
+							"pm.test(\"test the name\",()=>{\r",
+							"    pm.expect(jsonData.data.id).to.eql(pm.environment.get(\"id\"))\r",
+							"})\r",
+							"var statusCode = responseCode.code;\r",
+							"console.log(statusCode)\r",
+							"switch(statusCode){\r",
+							"    case 200:\r",
+							"        pm.test(\"status code matched\",function(){\r",
+							"        pm.response.to.have.status(200);\r",
+							"        });\r",
+							"        break\r",
+							"    case 201:\r",
+							"        pm.test(\"status code matched\",function(){\r",
+							"        pm.response.to.have.status(201);\r",
+							"        });\r",
+							"        break\r",
+							"    default:\r",
+							"        console.log(\"No match\");\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/api/studentsDetails/{{id}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
