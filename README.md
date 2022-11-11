@@ -1,6 +1,6 @@
 # Project Title
  
- APi test using Postman
+ API testing using Postman and newman
 
  
 
